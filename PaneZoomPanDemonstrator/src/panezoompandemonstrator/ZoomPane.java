@@ -7,6 +7,7 @@ package panezoompandemonstrator;
 
 
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -16,10 +17,21 @@ import javafx.scene.layout.Pane;
  * @author ben
  */
 public class ZoomPane extends Pane {
-    
+    private static Point2D mouseInitialPosition;
     public ZoomPane(Pane view){
         this.getChildren().add(view);
         this.setOnScroll(this::onMouseScroll);
+        this.setOnMousePressed(this::onMousePressed);
+        this.setOnMouseDragged(this::onMouseDragged);
+    }
+    
+    public void onMousePressed(MouseEvent event){
+        mouseInitialPosition = new Point2D(event.getX(),event.getY());
+    }
+    
+    public void onMouseDragged(MouseEvent event){
+        pan(event.getX()-mouseInitialPosition.getX(),event.getY()-mouseInitialPosition.getY());
+        mouseInitialPosition =  new Point2D(event.getX(),event.getY());
     }
     
     public void onMouseScroll(ScrollEvent event){
@@ -44,5 +56,12 @@ public class ZoomPane extends Pane {
             child.setLayoutY(child.getLayoutY()+magnitudeChange.getY());
         });
         
+    }
+    
+    private void pan(double x, double y){
+        this.getChildren().forEach(child->{
+            child.setLayoutX(child.getLayoutX()+x);
+            child.setLayoutY(child.getLayoutY()+y);
+        });
     }
 }
