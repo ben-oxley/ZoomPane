@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -39,13 +41,15 @@ public class PaneZoomPanDemonstrator extends Application {
         pane.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         pane.getChildren().add(rect);
         ZoomPane root = new ZoomPane(pane);
-        
+        rect.setOnMouseClicked((e)->root.centrePartOfNode(pane, rect.getLayoutBounds()));
         Scene scene = new Scene(root, 1000, 1000);
         
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
+
 
     /**
      * @param args the command line arguments
